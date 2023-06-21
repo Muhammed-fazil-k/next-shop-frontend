@@ -1,17 +1,18 @@
-import Head from 'next/head'
-import React from 'react'
+import Head from "next/head";
+import React from "react";
+import Title from "../components/Title";
 
-const Home:React.FC = () => {
+const Home: React.FC = () => {
   return (
     <>
-     <Head>
-      <title>Next shop</title>
-     </Head>
-     <main>
-      <h1>Next shop</h1>
-     </main>
+      <Head>
+        <title>Next shop</title>
+      </Head>
+      <main className="px-6 py-6">
+        <Title>Next Blog</Title>
+        <p>[TODO : display products]</p>
+      </main>
     </>
-  )
-  
-}
+  );
+};
 export default Home;
