@@ -1,9 +1,9 @@
-//client side rendering 
+//client side rendering using api routes
 
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
-import { getProducts, getProducts2 } from "../lib/products";
+import { getProducts } from "../lib/products";
 
 
 
@@ -11,7 +11,12 @@ const HomePage: React.FC = () => {
   const [products, setProducts] = useState([])
 
   useEffect(()=>{
-    getProducts().then(products=>setProducts(products))
+    const test = async ()=>{
+      const res = await fetch('/api/products')
+      const prod = await res.json()
+      setProducts(prod)
+    }
+    test()
   },[])
 
   console.log('[HomePage] renders ',products);
