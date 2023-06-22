@@ -1,14 +1,19 @@
-import Head from "next/head";
-import React from "react";
-import Title from "../components/Title";
+//client side rendering 
 
-const products = [
-  {id:1,title:"First product"},
-  {id:2,title:"Second product"},
-] 
+import Head from "next/head";
+import React, { useEffect, useState } from "react";
+import Title from "../components/Title";
+import { getProducts } from "../lib/products";
+
 
 
 const HomePage: React.FC = () => {
+  const [products, setProducts] = useState([])
+
+  useEffect(()=>{
+    getProducts().then(products=>setProducts(products))
+  },[])
+
   console.log('[HomePage] renders ',products);
   
   return (

@@ -1,14 +1,32 @@
+//server side renering using Incremental static generation
 import Head from "next/head";
 import React from "react";
 import Title from "../components/Title";
+import { Product, getProducts } from "../lib/products";
+import { GetServerSideProps, GetStaticProps } from "next";
 
-const products = [
+const products1 = [
   {id:1,title:"First product"},
   {id:2,title:"Second product"},
 ] 
 
+interface HomePageProps{
+  products: Product[];
+}
 
-const HomePage: React.FC = () => {
+export const getServerSideProps:GetServerSideProps<HomePageProps> = async () => {
+  console.log('[HomePage]: getServerSideProps()');
+  
+  const products = await getProducts()
+  return {
+    props:{
+      products
+    }
+  }
+}
+
+
+const HomePage: React.FC<HomePageProps> = ({products}) => {
   console.log('[HomePage] renders ',products);
   
   return (
@@ -17,7 +35,7 @@ const HomePage: React.FC = () => {
         <title>Next shop</title>
       </Head>
       <main className="px-6 py-6">
-        <Title>Next Blog</Title>
+        <Title>Next Blog server side rendering</Title>
         <p>[TODO : display products]</p>
         <ul>
 
