@@ -17,3 +17,4 @@ export async function getProducts():Promise<Product[]> {
   const products = await response.json();
   return products.map(stripProduct)
 }
+

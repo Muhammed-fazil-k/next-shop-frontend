@@ -3,7 +3,7 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
-import { getProducts } from "../lib/products";
+import { getProducts, getProducts2 } from "../lib/products";
 
 
 
