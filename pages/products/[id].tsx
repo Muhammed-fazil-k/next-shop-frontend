@@ -23,21 +23,24 @@ export const getStaticPaths : GetStaticPaths<ProductPageParams> =async () => {
         },
       };
     }),
-    fallback: false,
+    fallback: 'blocking',
   };
 }
 
 export const getStaticProps:GetStaticProps<ProductPageProps> = async ({ params: { id } }) => {
   const product = await getProduct(id);
+  console.log('[pages/id -serverside]: id',id);
+
   return {
     props: {
       product: product,
     },
-    //revalidate:30
+    revalidate:10
   };
 }
 
 const ProductPage:React.FC<ProductPageProps> = ({ product}) => {
+  
   return (
     <>
       <Head>

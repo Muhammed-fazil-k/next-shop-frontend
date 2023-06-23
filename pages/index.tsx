@@ -24,7 +24,7 @@ export const getStaticProps:GetStaticProps<HomePageProps> = async () => {
       products
     },
     //whenever you make a a req for this page it will check if props value is expired or not
-    //revalidate:30 //seconds,
+    revalidate:10 //seconds,
   }
 }
 
@@ -39,7 +39,6 @@ const HomePage: React.FC<HomePageProps> = ({products}) => {
       </Head>
       <main className="px-6 py-6">
         <Title>Next Blog incremetal approach</Title>
-        <p>[TODO : display products]</p>
         <ul>
 
         {products.map(product=>{
