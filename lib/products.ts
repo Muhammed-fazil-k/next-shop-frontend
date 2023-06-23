@@ -20,7 +20,7 @@ export async function getProducts():Promise<Product[]> {
   return products.map(stripProduct)
 }
 
-export async function getProduct(id:string):Promise<Product> {
+export async function getProduct(id:any):Promise<Product> {
     const response = await fetch(`http://localhost:1337/products/${id}`);
     const product = await response.json();
     return stripProduct(product)

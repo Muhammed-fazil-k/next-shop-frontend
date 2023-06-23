@@ -33,6 +33,7 @@ export const getStaticProps:GetStaticProps<ProductPageProps> = async ({ params: 
     props: {
       product: product,
     },
+    //revalidate:30
   };
 }
 

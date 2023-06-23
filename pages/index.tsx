@@ -24,13 +24,13 @@ export const getStaticProps:GetStaticProps<HomePageProps> = async () => {
       products
     },
     //whenever you make a a req for this page it will check if props value is expired or not
-    revalidate:5 * 60 //seconds,
+    //revalidate:30 //seconds,
   }
 }
 
 
 const HomePage: React.FC<HomePageProps> = ({products}) => {
-  console.log('[HomePage] renders ',products);
+  console.log('[HomePage] renders ');
   
   return (
     <>
