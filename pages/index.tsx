@@ -23,7 +23,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
       products,
     },
     //whenever you make a a req for this page it will check if props value is expired or not
-    revalidate: 10, //seconds,
+    revalidate: parseInt(process.env.REVALIDATE_SECONDS), //seconds,
   };
 };
 

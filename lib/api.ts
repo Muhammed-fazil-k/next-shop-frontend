@@ -1,4 +1,5 @@
 export class ApiError extends Error {
+  status: number;
   constructor(url:string,status:number) {
     super(`${url} returned ${status}`);
 

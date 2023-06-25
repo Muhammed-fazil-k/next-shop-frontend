@@ -6,12 +6,12 @@ export interface Product {
   description: string;
 }
 
-const CMS_URL = "http://localhost:1337";
+const CMS_URL = process.env.CMS_URL;
 
 export async function getProducts(): Promise<Product[]> {
   const products = await fetchJson(`${CMS_URL}/products`);
   return products.map(stripProduct);
-}
+} 
 
 export async function getProduct(id: any): Promise<Product> {
   const product = await fetchJson(`${CMS_URL}/products/${id}`);
