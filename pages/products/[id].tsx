@@ -4,16 +4,16 @@ import Title from "../../components/Title";
 import { Product, getProduct, getProducts } from "../../lib/products";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-
+import { ApiError } from "../../lib/api";
 interface ProductPageParams extends ParsedUrlQuery {
-    id : string
+  id: string;
 }
 
 interface ProductPageProps {
-    product : Product
+  product: Product;
 }
 
-export const getStaticPaths : GetStaticPaths<ProductPageParams> =async () => {
+export const getStaticPaths: GetStaticPaths<ProductPageParams> = async () => {
   const products = await getProducts();
   return {
     paths: products.map((product) => {
@@ -23,32 +23,35 @@ export const getStaticPaths : GetStaticPaths<ProductPageParams> =async () => {
         },
       };
     }),
-    fallback: 'blocking',
+    fallback: "blocking",
   };
-}
+};
 
-export const getStaticProps:GetStaticProps<ProductPageProps> = async ({ params: { id } }) => {
-  try{
+export const getStaticProps: GetStaticProps<ProductPageProps> = async ({
+  params: { id },
+}) => {
+  try {
     const product = await getProduct(id);
-    console.log('[pages/id -serverside]: id',id);
-  
+    console.log("[pages/id -serverside]: id", id);
+
     return {
       props: {
         product: product,
       },
-      revalidate:10
+      revalidate: 10,
     };
-  }catch(err){
-    return {
-      notFound:true
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 404) {
+      return {
+        notFound: true,
+      };
+    } else {
+      throw err;
     }
   }
-  
-  
-}
+};
 
-const ProductPage:React.FC<ProductPageProps> = ({ product}) => {
-  
+const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
   return (
     <>
       <Head>
@@ -56,9 +59,7 @@ const ProductPage:React.FC<ProductPageProps> = ({ product}) => {
       </Head>
       <main className="px-6 py-6">
         <Title>{product.title}</Title>
-        <p>
-            {product.description}
-        </p>
+        <p>{product.description}</p>
       </main>
     </>
   );
