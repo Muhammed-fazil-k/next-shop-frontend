@@ -5,6 +5,7 @@ export interface Product {
   title: string;
   description: string;
   price:string;
+  pictureUrl:string;
 }
 
 const CMS_URL = process.env.CMS_URL;
@@ -25,5 +26,6 @@ function stripProduct(product: any): Product {
     title: product.title,
     description: product.description,
     price:'$'+product.price.toFixed(2),
+    pictureUrl:CMS_URL + product.picture.url
   };
 }
