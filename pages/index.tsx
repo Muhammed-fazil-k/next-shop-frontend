@@ -37,7 +37,7 @@ const HomePage: React.FC<HomePageProps> = ({ products }) => {
         <title>Next shop</title>
       </Head>
       <main className="px-6 py-6">
-        <Title>Next Blog incremetal approach</Title>
+        <Title>Next Blog</Title>
         <ul className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4">
           {products.map((product) => {
             return (

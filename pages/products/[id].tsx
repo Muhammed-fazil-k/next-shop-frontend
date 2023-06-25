@@ -5,6 +5,7 @@ import { Product, getProduct, getProducts } from "../../lib/products";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { ApiError } from "../../lib/api";
+import Image from "next/image";
 interface ProductPageParams extends ParsedUrlQuery {
   id: string;
 }
@@ -59,7 +60,15 @@ const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
       </Head>
       <main className="px-6 py-6">
         <Title>{product.title}</Title>
-        <p>{product.description}</p>
+        <div className="flex flex-col lg:flex-row">
+          <div>
+            <Image src={product.pictureUrl} alt="" width={640} height={480} />
+          </div>
+          <div className="flex-1 lg:ml-4">
+            <p className="text-sm">{product.description}</p>
+            <p className="text-lg font-bold">{product.price}</p>
+          </div>
+        </div>
       </main>
     </>
   );
