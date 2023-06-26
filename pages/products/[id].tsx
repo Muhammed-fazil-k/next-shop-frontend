@@ -1,11 +1,10 @@
 import React from "react";
-import Head from "next/head";
-import Title from "../../components/Title";
 import { Product, getProduct, getProducts } from "../../lib/products";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { ApiError } from "../../lib/api";
 import Image from "next/image";
+import Layout from "../../components/Layout";
 interface ProductPageParams extends ParsedUrlQuery {
   id: string;
 }
@@ -54,23 +53,17 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({
 
 const ProductPage: React.FC<ProductPageProps> = ({ product }) => {
   return (
-    <>
-      <Head>
-        <title>Next shop</title>
-      </Head>
-      <main className="px-6 py-6">
-        <Title>{product.title}</Title>
-        <div className="flex flex-col lg:flex-row">
-          <div>
-            <Image src={product.pictureUrl} alt="" width={640} height={480} />
-          </div>
-          <div className="flex-1 lg:ml-4">
-            <p className="text-sm">{product.description}</p>
-            <p className="text-lg font-bold">{product.price}</p>
-          </div>
+    <Layout title={product.title}>
+      <div className="flex flex-col lg:flex-row">
+        <div>
+          <Image src={product.pictureUrl} alt="" width={640} height={480} />
         </div>
-      </main>
-    </>
+        <div className="flex-1 lg:ml-4">
+          <p className="text-sm">{product.description}</p>
+          <p className="text-lg font-bold">{product.price}</p>
+        </div>
+      </div>
+    </Layout>
   );
 };
 

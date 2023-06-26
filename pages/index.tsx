@@ -1,11 +1,9 @@
 //server side renering using Incremental static generation
-import Head from "next/head";
 import React from "react";
-import Title from "../components/Title";
 import { Product, getProducts } from "../lib/products";
 import { GetStaticProps } from "next";
-import Link from "next/link";
 import ProductCard from "../components/ProductCard";
+import Layout from "../components/Layout";
 
 const products1 = [
   { id: 1, title: "First product" },
@@ -32,23 +30,17 @@ const HomePage: React.FC<HomePageProps> = ({ products }) => {
   console.log("[HomePage] renders ");
 
   return (
-    <>
-      <Head>
-        <title>Next shop</title>
-      </Head>
-      <main className="px-6 py-6">
-        <Title>Next Blog</Title>
-        <ul className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4">
-          {products.map((product) => {
-            return (
-              <li key={product.id}>
-                <ProductCard product={product} />
-              </li>
-            );
-          })}
-        </ul>
-      </main>
-    </>
+    <Layout title="Indoor Plants">
+      <ul className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4">
+        {products.map((product) => {
+          return (
+            <li key={product.id}>
+              <ProductCard product={product} />
+            </li>
+          );
+        })}
+      </ul>
+    </Layout>
   );
 };
 export default HomePage;
