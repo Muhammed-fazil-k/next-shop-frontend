@@ -1,12 +1,11 @@
-import React from "react";
+import React, { InputHTMLAttributes } from "react";
 
-interface InputProps{
-    type:string;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
 }
 
-const Input:React.FC<InputProps> = ({type}) => {
+const Input:React.FC<InputProps> = (props) => {
   return (
-    <input type={type} className="border px-3 py-1 rounded-sm w-80"/>
+    <input {...props} className="border px-3 py-1 rounded-sm w-80"/>
   )
 }
 
