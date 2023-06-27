@@ -5,23 +5,36 @@ import Input from "../components/Input";
 import Layout from "../components/Layout";
 import { fetchJson } from "../lib/api";
 import { log } from "console";
+import { stat } from "fs";
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const SignInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [status, setStatus] = useState({ loading: false, error: false });
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const res = await fetchJson("http://localhost:1337/auth/local", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        identifier: email,
-        password,
-      }),
-    });
-    console.log("[sign-in]: ", res);
+    setStatus({loading:true,error:false});
+    await sleep(4000);
+    try {
+      const res = await fetchJson("http://localhost:1337/auth/local", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          identifier: email,
+          password,
+        }),
+      });
+      setStatus({loading:false,error:false});
+      console.log("[sign-in]: ", res);
+    } catch (err) {
+      setStatus({loading:false,error:true});
+    }
   };
   return (
     <Layout title="Sign In">
@@ -42,7 +55,9 @@ const SignInPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Field>
-        <Button type="submit">Sign in</Button>
+        {status.error && <p className="text-red-500">Credentials are invalid</p>}
+        {status.loading ? (<p>Loading...</p>) : <Button type="submit">Sign in</Button>}
+        
       </form>
     </Layout>
   );
