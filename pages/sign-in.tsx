@@ -18,15 +18,15 @@ const SignInPage = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setStatus({loading:true,error:false});
-    await sleep(4000);
+    //await sleep(4000);
     try {
-      const res = await fetchJson("http://localhost:1337/auth/local", {
+      const res = await fetchJson("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          identifier: email,
+          email,
           password,
         }),
       });

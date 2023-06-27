@@ -1,5 +1,10 @@
 import { NextApiHandler } from "next";
 import { fetchJson } from "../../lib/api";
+import cookie from 'cookie';
+
+const CMS_URL = process.env.CMS_URL;
+
+
 const handleLogin: NextApiHandler = async (req, res) => {
   if (req.method !== "POST") {
     //405 it doesnt support other methods
@@ -9,7 +14,7 @@ const handleLogin: NextApiHandler = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const { jwt, user } = await fetchJson("http://localhost:1337/auth/local", {
+    const { jwt, user } = await fetchJson(`${CMS_URL}/auth/local`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +24,13 @@ const handleLogin: NextApiHandler = async (req, res) => {
         password,
       }),
     });
-    res.status(200).json({
+    res.status(200)
+    .setHeader('Set-Cookie',cookie.serialize('jwt',jwt,{
+      path:'/api',//Only accesible in api routes
+      httpOnly:true, // client side js cannot get jwt value
+      maxAge:1000,
+    }))
+    .json({
       id: user.id,
       username: user.username,
     });
