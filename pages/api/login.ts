@@ -28,7 +28,6 @@ const handleLogin: NextApiHandler = async (req, res) => {
     .setHeader('Set-Cookie',cookie.serialize('jwt',jwt,{
       path:'/api',//Only accesible in api routes
       httpOnly:true, // client side js cannot get jwt value
-      maxAge:1000,
     }))
     .json({
       id: user.id,
