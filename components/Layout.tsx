@@ -7,10 +7,11 @@ interface LayoutPageProps extends PropsWithChildren{
 }
 
 const Layout: React.FC<LayoutPageProps> = ({ title, children }) => {
+  const titleHeading = `${title} Next shop`;
   return (
     <>
       <Head>
-        <title>{title} Next shop</title>
+        <title>{titleHeading}</title>
       </Head>
       <main className="px-6 py-6">
         <Title>{title}</Title>
