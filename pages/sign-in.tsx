@@ -3,48 +3,22 @@ import Button from "../components/Button";
 import Field from "../components/Field";
 import Input from "../components/Input";
 import Layout from "../components/Layout";
-import { fetchJson } from "../lib/api";
 import { useRouter } from "next/router";
-import {useMutation} from 'react-query';
-import { useQueryClient } from "react-query";
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-
+import { useSignIn } from "../hooks/user";
 
 const SignInPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const queryClient = useQueryClient();
-  
-  const mutation = useMutation(async()=>{
-    return await fetchJson("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-  })
+  const { signIn, signInError, signInLoading } = useSignIn();
 
-  
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     //await sleep(4000);
-    try {
-      const user = await mutation.mutateAsync();
-      //update cache
-      queryClient.setQueryData('user',user);
-      console.log('[sign - in]:',user);
-      router.push('/')
-    } catch (err) {
-      //mutation.isError will be true
+    const isValid = await signIn(email, password);
+    if (isValid) {
+      router.push("/");
     }
   };
   return (
@@ -66,9 +40,12 @@ const SignInPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Field>
-        {mutation.isError && <p className="text-red-500">Credentials are invalid</p>}
-        {mutation.isLoading ? (<p>Loading...</p>) : <Button type="submit">Sign in</Button>}
-        
+        {signInError && <p className="text-red-500">Credentials are invalid</p>}
+        {signInLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <Button type="submit">Sign in</Button>
+        )}
       </form>
     </Layout>
   );
