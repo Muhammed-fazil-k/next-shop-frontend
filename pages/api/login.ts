@@ -32,7 +32,7 @@ const handleLogin: NextApiHandler<User> = async (req, res) => {
     }))
     .json({
       id: user.id,
-      username: user.username,
+      name: user.username,
     });
   } catch (err) {
     //invalid credential status

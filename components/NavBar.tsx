@@ -2,19 +2,20 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { fetchJson } from "../lib/api";
 import { User } from "../lib/user";
+import { useQuery } from "react-query";
+import { useUser } from "../hooks/user";
 
 const NavBar: React.FC = () => {
-  const [user, setUser] = useState<User>();
-  useEffect(() => {
-    console.log('Navbar:useEffect');
-    
-    (async () => {
-      try {
-        const user = await fetchJson("/api/user");
-        setUser(user);
-      } catch (err) {}
-    })();
-  }, []);
+  const user = useUser();
+
+  console.log("user:", user);
+
+  async function handleSignOut() {
+    console.log("signing out");
+    await fetchJson("/api/logout");
+    //FIXsetUser(undefined);
+  }
+
   return (
     <nav className="px-2 py-1 text-sm">
       <ul className="flex gap-2">
@@ -26,7 +27,7 @@ const NavBar: React.FC = () => {
           <>
             <li>{user.name}</li>
             <li>
-              <Link href="/sign-out"> Sign out</Link>
+              <button onClick={handleSignOut}> Sign out</button>
             </li>
           </>
         ) : (
