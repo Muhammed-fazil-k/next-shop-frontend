@@ -1,11 +1,12 @@
 import { NextApiHandler } from "next";
 import { fetchJson } from "../../lib/api";
 import cookie from 'cookie';
+import { User } from "../../lib/user";
 
 const CMS_URL = process.env.CMS_URL;
 
 
-const handleLogin: NextApiHandler = async (req, res) => {
+const handleLogin: NextApiHandler<User> = async (req, res) => {
   if (req.method !== "POST") {
     //405 it doesnt support other methods
     res.status(405).end();

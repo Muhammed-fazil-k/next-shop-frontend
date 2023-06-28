@@ -1,8 +1,20 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { fetchJson } from "../lib/api";
+import { User } from "../lib/user";
 
 const NavBar: React.FC = () => {
-  const user = undefined;
+  const [user, setUser] = useState<User>();
+  useEffect(() => {
+    console.log('Navbar:useEffect');
+    
+    (async () => {
+      try {
+        const user = await fetchJson("/api/user");
+        setUser(user);
+      } catch (err) {}
+    })();
+  }, []);
   return (
     <nav className="px-2 py-1 text-sm">
       <ul className="flex gap-2">

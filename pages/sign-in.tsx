@@ -6,12 +6,14 @@ import Layout from "../components/Layout";
 import { fetchJson } from "../lib/api";
 import { log } from "console";
 import { stat } from "fs";
+import { useRouter } from "next/router";
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 const SignInPage = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState({ loading: false, error: false });
@@ -31,7 +33,7 @@ const SignInPage = () => {
         }),
       });
       setStatus({loading:false,error:false});
-      console.log("[sign-in]: ", res);
+      router.push('/')
     } catch (err) {
       setStatus({loading:false,error:true});
     }
