@@ -7,22 +7,20 @@ import { fetchJson } from "../lib/api";
 import { log } from "console";
 import { stat } from "fs";
 import { useRouter } from "next/router";
-
+import {useMutation} from 'react-query';
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+
 
 const SignInPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState({ loading: false, error: false });
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    setStatus({loading:true,error:false});
-    //await sleep(4000);
-    try {
-      const res = await fetchJson("http://localhost:3000/api/login", {
+  
+  const mutation = useMutation(async()=>{
+    return await fetchJson("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,10 +30,18 @@ const SignInPage = () => {
           password,
         }),
       });
-      setStatus({loading:false,error:false});
+  })
+
+  
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    //await sleep(4000);
+    try {
+      const user = await mutation.mutateAsync();
+      console.log('[sign - in]:',user);
       router.push('/')
     } catch (err) {
-      setStatus({loading:false,error:true});
+      //mutation.isError will be true
     }
   };
   return (
@@ -57,8 +63,8 @@ const SignInPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Field>
-        {status.error && <p className="text-red-500">Credentials are invalid</p>}
-        {status.loading ? (<p>Loading...</p>) : <Button type="submit">Sign in</Button>}
+        {mutation.isError && <p className="text-red-500">Credentials are invalid</p>}
+        {mutation.isLoading ? (<p>Loading...</p>) : <Button type="submit">Sign in</Button>}
         
       </form>
     </Layout>
