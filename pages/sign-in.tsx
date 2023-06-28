@@ -4,10 +4,9 @@ import Field from "../components/Field";
 import Input from "../components/Input";
 import Layout from "../components/Layout";
 import { fetchJson } from "../lib/api";
-import { log } from "console";
-import { stat } from "fs";
 import { useRouter } from "next/router";
 import {useMutation} from 'react-query';
+import { useQueryClient } from "react-query";
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -18,6 +17,8 @@ const SignInPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const queryClient = useQueryClient();
   
   const mutation = useMutation(async()=>{
     return await fetchJson("http://localhost:3000/api/login", {
@@ -38,6 +39,8 @@ const SignInPage = () => {
     //await sleep(4000);
     try {
       const user = await mutation.mutateAsync();
+      //update cache
+      queryClient.setQueryData('user',user);
       console.log('[sign - in]:',user);
       router.push('/')
     } catch (err) {
